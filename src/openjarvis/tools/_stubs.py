@@ -398,7 +398,18 @@ class ToolExecutor:
             params.pop("_taint", None)
 
         # Confirmation check for sensitive tools
-        if tool.spec.requires_confirmation:
+        # [sheru] With [sheru.approvals] enabled, every send/write/run tool asks Yash
+        # yes/no, whatever callback the call site passed. See SHERU.md.
+        from openjarvis.sheru.approvals import gate as _sheru_gate
+
+        _sheru_ok = _sheru_gate(tool.spec, params)
+        if _sheru_ok is False:
+            return ToolResult(
+                tool_name=tool_call.name,
+                content=f"Tool '{tool_call.name}' execution denied by user.",
+                success=False,
+            )
+        if _sheru_ok is None and tool.spec.requires_confirmation:
             if not self._interactive or self._confirm_callback is None:
                 return ToolResult(
                     tool_name=tool_call.name,
