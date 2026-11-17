@@ -24,6 +24,10 @@ touch upstream files as little as possible, and list every one we do touch below
 
 2. Config: `~/.openjarvis/config.toml` (engine = mlx, analytics off, security profile personal).
 3. `.venv/bin/jarvis ask --agent orchestrator --tools calculator "..."`
+4. Google (Gmail, Calendar, Tasks, Drive, Contacts): Cloud project `sheru-515013`, OAuth client "Sheru Mac" (Desktop app).
+   One consent writes tokens to `~/.openjarvis/connectors/{google,gmail,gcalendar,...}.json` (chmod 600).
+   Re-auth: `.venv/bin/jarvis connect gdrive`. App is published (no 7-day token expiry) once "Publish app" is clicked
+   under Google Auth Platform → Audience.
 
 ## Our code
 - `src/openjarvis/sheru/approvals.py` — yes/no approvals for tool calls (tests: `tests/sheru/`).
