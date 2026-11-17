@@ -167,7 +167,7 @@ def _short(v: Any, n: int = 160) -> str:
 
 
 def question_for(tool: str, args: Dict[str, Any]) -> str:
-    lines = [f"Jarvis wants to use {tool}."]
+    lines = [f"Sheru wants to use {tool}."]
     for k, v in list(args.items())[:6]:
         lines.append(f"{k}: {_short(v)}")
     lines.append("Allow it?")
@@ -214,7 +214,7 @@ def gate(spec: Any, params: Any) -> Optional[bool]:
 
 _DIALOG_SCRIPT = (
     "on run argv\n"
-    "  set r to display dialog (item 1 of argv) with title \"Jarvis\" buttons {\"No\", \"Yes\"} "
+    "  set r to display dialog (item 1 of argv) with title \"Sheru\" buttons {\"No\", \"Yes\"} "
     "default button \"No\" with icon caution giving up after (item 2 of argv as integer)\n"
     "  if gave up of r then return \"timeout\"\n"
     "  return button returned of r\n"
