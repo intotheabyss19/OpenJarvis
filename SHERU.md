@@ -38,6 +38,10 @@ touch upstream files as little as possible, and list every one we do touch below
   set, any tool with `requires_confirmation`, `http_request` unless GET/HEAD, and any unknown (MCP) tool whose
   name has an action verb (send, delete, create, click, ...). Tune with `always_ask` / `never_ask`.
 
+- `src/openjarvis/sheru/google_tools.py`: live Google tools for the agent. Reads (`gmail_search`, `gmail_read`,
+  `calendar_events`, `tasks_list`) run freely; `calendar_create_event` and `gmail_create_draft` ask first. The
+  OAuth scope can't send mail, so drafts are as far as email goes. Uses `~/.openjarvis/connectors/google.json`.
+
 ## Upstream files we've changed
 - `src/openjarvis/tools/_stubs.py` (`ToolExecutor.execute`, ~10 lines at "Confirmation check"): calls
   `sheru.approvals.gate()`. Doing it here, rather than at each call site, overrides every hardcoded
@@ -45,6 +49,8 @@ touch upstream files as little as possible, and list every one we do touch below
   `jarvis agents ask --yes` default) and any new ones upstream adds. With approvals disabled, behaviour is
   exactly upstream's. On merge conflicts there: keep their change, re-add the gate call above
   `if tool.spec.requires_confirmation`.
+- `src/openjarvis/tools/__init__.py` (+5 lines at the end): imports `openjarvis.sheru.google_tools` so its tools
+  register. Upstream has no plugin loading yet; drop this when it does.
 
 Known limit: the server's SSE chat path calls the executor from inside the async handler, so while a dialog
 is waiting that request's stream pauses (the dialog still works). Revisit when the voice front end answers

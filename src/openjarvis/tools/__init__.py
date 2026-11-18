@@ -183,4 +183,10 @@ try:
 except ImportError:
     pass
 
+# [sheru] live Gmail / Calendar / Tasks tools (see SHERU.md)
+try:
+    import openjarvis.sheru.google_tools  # noqa: F401
+except ImportError:
+    pass
+
 __all__ = ["BaseTool", "ToolExecutor", "ToolSpec"]
